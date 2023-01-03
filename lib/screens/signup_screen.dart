@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/home_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
@@ -68,14 +69,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
+                    FirebaseFirestore.instance.collection('users').add({
+                      'username': _userNameTextController.text.trim(),
+                      'email': _emailTextController.text.trim(),
+                    }).then((value) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                      );
+                    }).onError((error, stackTrace) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Error ${error.toString()}"),
+                        ),
+                      );
+                    });
                   }).onError((error, stackTrace) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Error ${error.toString()}")));
+                      SnackBar(
+                        content: Text("Error ${error.toString()}"),
+                      ),
+                    );
                   });
                 }),
                 const SizedBox(
