@@ -12,95 +12,81 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-String? dataName;
-
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    super.initState();
-
-    dispName();
-  }
-
-  dispName() async {
-    Query<Map<String, dynamic>> docRef = FirebaseFirestore.instance
-        .collection('users')
-        .where('email',
-            isEqualTo: FirebaseAuth.instance.currentUser!.email.toString());
-    docRef.get().then((doc) {
-      dataName = doc.docs[0]['username'];
-    });
-    setState(() {
-      dataName;
-    });
-  }
-
-  @override
-  void dispose() {
-    dispName().dispose();
-    // ignore: avoid_print
-    print('Dispose used');
-    super.dispose();
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-                "Halo, ${FirebaseAuth.instance.currentUser?.email.toString()}\n$dataName"),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    surfaceTintColor: Colors.blueGrey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    FirebaseAuth.instance
-                        .signOut()
-                        .then((value) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignInScreen()),
-                            ));
-                  },
-                  child: const Text("LogOut"),
-                ),
-                const SizedBox(
-                  width: 20.0,
-                ),
-                const SizedBox(
-                  width: 20.0,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    surfaceTintColor: Colors.blueGrey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .where('email',
+                        isEqualTo: FirebaseAuth.instance.currentUser?.email)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const CircularProgressIndicator(
+                      strokeWidth: 1,
                     );
-                  },
-                  child: const Text("Utama"),
-                ),
-              ],
-            ),
-          ],
+                  }
+                  return Text(snapshot.data?.docs[0]['username']);
+                },
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      surfaceTintColor: Colors.blueGrey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      FirebaseAuth.instance
+                          .signOut()
+                          .then((value) => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SignInScreen()),
+                              ));
+                    },
+                    child: const Text("LogOut"),
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      surfaceTintColor: Colors.blueGrey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainScreen()),
+                      );
+                    },
+                    child: const Text("Utama"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
