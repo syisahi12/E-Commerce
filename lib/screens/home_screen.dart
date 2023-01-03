@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/screens/checkout_screen.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,21 +44,50 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
                 "Halo, ${FirebaseAuth.instance.currentUser?.email.toString()}\n$dataName"),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                surfaceTintColor: Colors.blueGrey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    surfaceTintColor: Colors.blueGrey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    FirebaseAuth.instance
+                        .signOut()
+                        .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignInScreen()),
+                            ));
+                  },
+                  child: const Text("LogOut"),
                 ),
-              ),
-              onPressed: () {
-                FirebaseAuth.instance.signOut().then((value) => Navigator.push(
+                const SizedBox(
+                  width: 20.0,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    surfaceTintColor: Colors.blueGrey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SignInScreen()),
-                    ));
-              },
-              child: const Text("LogOut"),
+                          builder: (context) => const CheckoutScreen()),
+                    );
+                  },
+                  child: const Text("Checkout"),
+                ),
+              ],
             ),
           ],
         ),

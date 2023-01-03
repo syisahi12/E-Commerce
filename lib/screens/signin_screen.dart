@@ -37,8 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                signinTextField("Enter Username", Icons.person_outline, false,
-                    _emailTextController),
+                signinTextField("Enter Email", Icons.alternate_email_outlined,
+                    false, _emailTextController),
                 const SizedBox(
                   height: 20.0,
                 ),

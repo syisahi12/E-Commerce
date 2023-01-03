@@ -53,8 +53,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                signinTextField("Enter Email Address", Icons.person_outline,
-                    false, _emailTextController),
+                signinTextField(
+                    "Enter Email Address",
+                    Icons.alternate_email_outlined,
+                    false,
+                    _emailTextController),
                 const SizedBox(
                   height: 20.0,
                 ),
