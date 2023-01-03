@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-var dataName;
+String? dataName;
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   dispName() async {
-    Query<Map<String, dynamic>> docRef = await FirebaseFirestore.instance
+    Query<Map<String, dynamic>> docRef = FirebaseFirestore.instance
         .collection('users')
         .where('email',
             isEqualTo: FirebaseAuth.instance.currentUser!.email.toString());
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-                "Halo, ${FirebaseAuth.instance.currentUser?.email.toString()}\n${dataName}"),
+                "Halo, ${FirebaseAuth.instance.currentUser?.email.toString()}\n$dataName"),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 surfaceTintColor: Colors.blueGrey,
