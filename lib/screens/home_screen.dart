@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/checkout_screen.dart';
+import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
         .collection('users')
         .where('email',
             isEqualTo: FirebaseAuth.instance.currentUser!.email.toString());
-    docRef.get().then((doc) async {
-      dataName = await doc.docs[0]['username'];
+    docRef.get().then((doc) {
+      dataName = doc.docs[0]['username'];
     });
     setState(() {
       dataName;
@@ -35,6 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    dispName().dispose();
+    // ignore: avoid_print
+    print('Dispose used');
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -71,6 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   width: 20.0,
                 ),
+                const SizedBox(
+                  width: 20.0,
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     surfaceTintColor: Colors.blueGrey,
@@ -82,10 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CheckoutScreen()),
+                          builder: (context) => const MainScreen()),
                     );
                   },
-                  child: const Text("Checkout"),
+                  child: const Text("Utama"),
                 ),
               ],
             ),

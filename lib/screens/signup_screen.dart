@@ -34,9 +34,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-          hexStringToColor("cb2b93"),
-          hexStringToColor("9546c4"),
-          hexStringToColor("5e61f4")
+          hexStringToColor("39A848"),
+          hexStringToColor("39A848"),
+          hexStringToColor("39A848")
         ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
         child: SingleChildScrollView(
           child: Padding(
@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 20, MediaQuery.of(context).size.height * 0.2, 20, 0),
             child: Column(
               children: [
-                logoWidget("assets/images/login.png"),
+                logoWidget("assets/images/logo.png"),
                 const SizedBox(
                   height: 30,
                 ),
