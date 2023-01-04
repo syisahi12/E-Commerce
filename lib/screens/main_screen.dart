@@ -1,6 +1,8 @@
 // ignore_for_file: implementation_imports, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/components/coustom_bottom_nav_bar.dart';
+import 'package:final_project/enums.dart';
 import 'package:final_project/screens/checkout_screen.dart';
 import 'package:final_project/theme.dart';
 import 'package:final_project/widgets/bottom_navbar_item.dart';
@@ -20,7 +22,7 @@ class MainScreen extends StatelessWidget {
         title: const Text('TOKI'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
         child: ListView(children: [
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -174,39 +176,7 @@ class MainScreen extends StatelessWidget {
           ),
         ]),
       ),
-      floatingActionButton: Container(
-        height: 65,
-        width: MediaQuery.of(context).size.width - (2 * edge),
-        margin: EdgeInsets.symmetric(
-          horizontal: edge,
-        ),
-        decoration: BoxDecoration(
-          color: Color.fromARGB(139, 241, 241, 241),
-          borderRadius: BorderRadius.circular(23),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            BottomNavbarItem(
-              imageUrl: 'assets/images/icon_home.png',
-              isActive: true,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/images/icon_email.png',
-              isActive: false,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/images/icon_card.png',
-              isActive: false,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/images/icon_love.png',
-              isActive: false,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
     );
   }
 }

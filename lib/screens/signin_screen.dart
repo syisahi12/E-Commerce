@@ -1,4 +1,4 @@
-import 'package:final_project/screens/home_screen.dart';
+import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signup_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
@@ -59,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           (value) => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
+                                builder: (context) => const MainScreen()),
                           ),
                         )
                         .catchError((onError) => {

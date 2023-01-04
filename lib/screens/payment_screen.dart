@@ -1,3 +1,4 @@
+import 'package:final_project/utils/tripay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -112,7 +113,11 @@ class Payment extends StatelessWidget {
             bottom: 10,
           ),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              getPaymentChannel('QRIS2').then((response) {
+                print(response);
+              });
+            },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,

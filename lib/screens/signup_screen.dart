@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/home_screen.dart';
+import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
+                            builder: (context) => const MainScreen()),
                       );
                     }).onError((error, stackTrace) {
                       ScaffoldMessenger.of(context).showSnackBar(
