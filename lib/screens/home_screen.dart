@@ -30,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const CircularProgressIndicator(
-                      strokeWidth: 1,
-                    );
+                    return Text("");
                   }
                   return Text(snapshot.data?.docs[0]['username']);
                 },
