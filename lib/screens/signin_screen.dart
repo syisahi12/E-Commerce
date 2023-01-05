@@ -1,8 +1,8 @@
 import 'package:final_project/screens/main_screen.dart';
+import 'package:final_project/screens/profile/profile_screen.dart';
 import 'package:final_project/screens/signup_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/firebase_utils.dart';
@@ -17,7 +17,8 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  String? username;
+  bool? isKasir;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +54,22 @@ class _SignInScreenState extends State<SignInScreen> {
                 signInUpButton(
                   context,
                   true,
-                  () {
-                    FirebaseUtils.login(context, _emailTextController,
-                        _passwordTextController, const MainScreen());
+                  () async {
+                    final firebaseUtils = FirebaseUtils();
+                    isKasir = await firebaseUtils.login(
+                        context, _emailTextController, _passwordTextController);
+                    if (isKasir!) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileScreen()),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainScreen()),
+                      );
+                    }
                   },
                 ),
                 const SizedBox(

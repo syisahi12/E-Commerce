@@ -6,10 +6,9 @@ import 'package:final_project/enums.dart';
 import 'package:final_project/screens/checkout_screen.dart';
 import 'package:final_project/theme.dart';
 import 'package:final_project/utils/firebase_utils.dart';
-import 'package:final_project/widgets/bottom_navbar_item.dart';
 import 'package:final_project/widgets/city_card.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_card/src/image_card_content.dart';
 import 'package:final_project/models/city.dart';
 
@@ -19,6 +18,13 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchBarFocusNode = FocusNode();
+    String data = "users";
+    final storage = FlutterSecureStorage();
+    Future<String> _loadData() async {
+      data = (await storage.read(key: 'dataKoleksi'))!.toString();
+      return data;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('TOKI'),
@@ -29,142 +35,151 @@ class MainScreen extends StatelessWidget {
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-          child: ListView(children: [
-            FirebaseUtils.userFire(
-                firstText: "Selamat Datang, ", lastText: " !"),
-            SizedBox(
-              height: 2,
-            ),
-            Text(
-              'Belanja Hemat Hanya Di TokoToki',
-              style: greyTextStyle.copyWith(
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            TextField(
-              focusNode: searchBarFocusNode,
-              cursorColor: Colors.grey,
-              decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.black, width: 2)),
-                  hintText: '   Search',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                  prefixIcon: Container(
-                    padding: EdgeInsets.all(15),
-                    child: Icon(
-                      Icons.search,
-                      size: 30,
-                    ),
-                    width: 18,
-                  )),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  CityCard(
-                    City(
-                      id: 1,
-                      name: 'Minuman',
-                      imageUrl: 'assets/images/minuman.png',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    City(
-                      id: 2,
-                      name: 'Makanan',
-                      imageUrl: 'assets/images/makanan.png',
-                      isPopular: true,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    City(
-                      id: 3,
-                      name: 'Alat Mandi',
-                      imageUrl: 'assets/images/alat_mandi.png',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    City(
-                      id: 4,
-                      name: 'Buah',
-                      imageUrl: 'assets/images/buah.png',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    City(
-                      id: 5,
-                      name: 'Alat Dapur',
-                      imageUrl: 'assets/images/dapur.png',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    City(
-                      id: 6,
-                      name: 'Obat Herbal',
-                      imageUrl: 'assets/images/herbal.png',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 24,
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: FutureBuilder(
+            future: _loadData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return ListView(children: [
+                FirebaseUtils().userFire(
+                    firstText: "Selamat Datang, ",
+                    lastText: " !",
+                    dataKoleksi: data),
+                SizedBox(
+                  height: 2,
+                ),
                 Text(
-                  "Produk Baru",
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                  'Belanja Hemat Hanya Di TokoToki',
+                  style: greyTextStyle.copyWith(
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(
-                  height: 25.0,
+                  height: 20.0,
                 ),
-                FillImageCard(
-                  width: 150,
-                  heightImage: 150,
-                  imageProvider: AssetImage('assets/images/gula.png'),
-                  tagSpacing: 30,
-                  tags: [Text('Harga :'), Text('Rp19.000')],
-                  title: Text(
-                    'Gulaku',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  description: Text(
-                    'Ini gula yang sangat manis',
-                    style: TextStyle(fontWeight: FontWeight.w300),
+                TextField(
+                  focusNode: searchBarFocusNode,
+                  cursorColor: Colors.grey,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 2)),
+                      hintText: '   Search',
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                      prefixIcon: Container(
+                        padding: EdgeInsets.all(15),
+                        child: Icon(
+                          Icons.search,
+                          size: 30,
+                        ),
+                        width: 18,
+                      )),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  height: 150,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      CityCard(
+                        City(
+                          id: 1,
+                          name: 'Minuman',
+                          imageUrl: 'assets/images/minuman.png',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CityCard(
+                        City(
+                          id: 2,
+                          name: 'Makanan',
+                          imageUrl: 'assets/images/makanan.png',
+                          isPopular: true,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CityCard(
+                        City(
+                          id: 3,
+                          name: 'Alat Mandi',
+                          imageUrl: 'assets/images/alat_mandi.png',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CityCard(
+                        City(
+                          id: 4,
+                          name: 'Buah',
+                          imageUrl: 'assets/images/buah.png',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CityCard(
+                        City(
+                          id: 5,
+                          name: 'Alat Dapur',
+                          imageUrl: 'assets/images/dapur.png',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CityCard(
+                        City(
+                          id: 6,
+                          name: 'Obat Herbal',
+                          imageUrl: 'assets/images/herbal.png',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 24,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ]),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Produk Baru",
+                      style: TextStyle(
+                          fontSize: 30.0, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                    FillImageCard(
+                      width: 150,
+                      heightImage: 150,
+                      imageProvider: AssetImage('assets/images/gula.png'),
+                      tagSpacing: 30,
+                      tags: [Text('Harga :'), Text('Rp19.000')],
+                      title: Text(
+                        'Gulaku',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      description: Text(
+                        'Ini gula yang sangat manis',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                    ),
+                  ],
+                ),
+              ]);
+            },
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
