@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:final_project/theme.dart';
+import 'package:final_project/utils/firebase_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -22,24 +23,7 @@ class _BodyState extends State<Body> {
         children: [
           ProfilePic(),
           SizedBox(height: 15),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .where('email',
-                    isEqualTo: FirebaseAuth.instance.currentUser?.email)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Text("");
-              }
-              return Text(
-                capitalize(snapshot.data?.docs[0]['username']),
-                style: blackTextStyle.copyWith(
-                  fontSize: 26,
-                ),
-              );
-            },
-          ),
+          FirebaseUtils.userFire(),
           const SizedBox(
             height: 30.0,
           ),

@@ -5,6 +5,7 @@ import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/screens/checkout_screen.dart';
 import 'package:final_project/theme.dart';
+import 'package:final_project/utils/firebase_utils.dart';
 import 'package:final_project/widgets/bottom_navbar_item.dart';
 import 'package:final_project/widgets/city_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,26 +25,7 @@ class MainScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
         child: ListView(children: [
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .where('email',
-                    isEqualTo: FirebaseAuth.instance.currentUser?.email)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Text("");
-              }
-              return Text(
-                'Selamat Datang, ' +
-                    capitalize(snapshot.data?.docs[0]['username']) +
-                    '!',
-                style: blackTextStyle.copyWith(
-                  fontSize: 24,
-                ),
-              );
-            },
-          ),
+          FirebaseUtils.userFire(firstText: "Selamat Datang, ", lastText: " !"),
           SizedBox(
             height: 2,
           ),
@@ -63,7 +45,7 @@ class MainScreen extends StatelessWidget {
                 filled: true,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none),
+                    borderSide: BorderSide(color: Colors.black, width: 2)),
                 hintText: '   Search',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                 prefixIcon: Container(

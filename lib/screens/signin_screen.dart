@@ -5,6 +5,8 @@ import 'package:final_project/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/firebase_utils.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -15,6 +17,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+  String? username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,23 +54,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   context,
                   true,
                   () {
-                    FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text)
-                        .then(
-                          (value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
-                          ),
-                        )
-                        .catchError((onError) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Error ${onError.toString()}")))
-                            });
+                    FirebaseUtils.login(context, _emailTextController,
+                        _passwordTextController, const MainScreen());
                   },
                 ),
                 const SizedBox(
