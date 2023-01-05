@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/screens/home_screen.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';

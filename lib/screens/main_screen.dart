@@ -18,145 +18,154 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchBarFocusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
         title: const Text('TOKI'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-        child: ListView(children: [
-          FirebaseUtils.userFire(firstText: "Selamat Datang, ", lastText: " !"),
-          SizedBox(
-            height: 2,
-          ),
-          Text(
-            'Belanja Hemat Hanya Di TokoToki',
-            style: greyTextStyle.copyWith(
-              fontSize: 16,
+      body: GestureDetector(
+        onTap: () {
+          searchBarFocusNode.unfocus();
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+          child: ListView(children: [
+            FirebaseUtils.userFire(
+                firstText: "Selamat Datang, ", lastText: " !"),
+            SizedBox(
+              height: 2,
             ),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextField(
-            cursorColor: Colors.grey,
-            decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.black, width: 2)),
-                hintText: '   Search',
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                prefixIcon: Container(
-                  padding: EdgeInsets.all(15),
-                  child: Icon(
-                    Icons.search,
-                    size: 30,
+            Text(
+              'Belanja Hemat Hanya Di TokoToki',
+              style: greyTextStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextField(
+              focusNode: searchBarFocusNode,
+              cursorColor: Colors.grey,
+              decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.black, width: 2)),
+                  hintText: '   Search',
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                  prefixIcon: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Icon(
+                      Icons.search,
+                      size: 30,
+                    ),
+                    width: 18,
+                  )),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  CityCard(
+                    City(
+                      id: 1,
+                      name: 'Minuman',
+                      imageUrl: 'assets/images/minuman.png',
+                    ),
                   ),
-                  width: 18,
-                )),
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          Container(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 2,
+                      name: 'Makanan',
+                      imageUrl: 'assets/images/makanan.png',
+                      isPopular: true,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 3,
+                      name: 'Alat Mandi',
+                      imageUrl: 'assets/images/alat_mandi.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 4,
+                      name: 'Buah',
+                      imageUrl: 'assets/images/buah.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 5,
+                      name: 'Alat Dapur',
+                      imageUrl: 'assets/images/dapur.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 6,
+                      name: 'Obat Herbal',
+                      imageUrl: 'assets/images/herbal.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 24,
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CityCard(
-                  City(
-                    id: 1,
-                    name: 'Minuman',
-                    imageUrl: 'assets/images/minuman.png',
+                Text(
+                  "Produk Baru",
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 25.0,
+                ),
+                FillImageCard(
+                  width: 150,
+                  heightImage: 150,
+                  imageProvider: AssetImage('assets/images/gula.png'),
+                  tagSpacing: 30,
+                  tags: [Text('Harga :'), Text('Rp19.000')],
+                  title: Text(
+                    'Gulaku',
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                CityCard(
-                  City(
-                    id: 2,
-                    name: 'Makanan',
-                    imageUrl: 'assets/images/makanan.png',
-                    isPopular: true,
+                  description: Text(
+                    'Ini gula yang sangat manis',
+                    style: TextStyle(fontWeight: FontWeight.w300),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                CityCard(
-                  City(
-                    id: 3,
-                    name: 'Alat Mandi',
-                    imageUrl: 'assets/images/alat_mandi.png',
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                CityCard(
-                  City(
-                    id: 4,
-                    name: 'Buah',
-                    imageUrl: 'assets/images/buah.png',
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                CityCard(
-                  City(
-                    id: 5,
-                    name: 'Alat Dapur',
-                    imageUrl: 'assets/images/dapur.png',
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                CityCard(
-                  City(
-                    id: 6,
-                    name: 'Obat Herbal',
-                    imageUrl: 'assets/images/herbal.png',
-                  ),
-                ),
-                SizedBox(
-                  width: 24,
                 ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Produk Baru",
-                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 25.0,
-              ),
-              FillImageCard(
-                width: 150,
-                heightImage: 150,
-                imageProvider: AssetImage('assets/images/gula.png'),
-                tagSpacing: 30,
-                tags: [Text('Harga :'), Text('Rp19.000')],
-                title: Text(
-                  'Gulaku',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                ),
-                description: Text(
-                  'Ini gula yang sangat manis',
-                  style: TextStyle(fontWeight: FontWeight.w300),
-                ),
-              ),
-            ],
-          ),
-        ]),
+          ]),
+        ),
       ),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
     );
