@@ -55,25 +55,23 @@ class CashierScreen extends StatelessWidget {
                     fontSize: 36, fontWeight: FontWeight.bold),
               ),
             ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Details",
-                        style: blackTextStyle.copyWith(fontSize: 24.0),
-                      ),
-                      Text(
-                        "Confirm",
-                        style: blackTextStyle,
-                      ),
-                    ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Details",
+                    style: blackTextStyle.copyWith(fontSize: 24.0),
                   ),
-                )),
+                  Text(
+                    "Confirm",
+                    style: blackTextStyle,
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               flex: 6,
               child: Container(

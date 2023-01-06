@@ -18,7 +18,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  bool? isKasir;
+  var isKasir;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     final firebaseUtils = FirebaseUtils();
                     isKasir = await firebaseUtils.login(
                         context, _emailTextController, _passwordTextController);
-                    if (isKasir!) {
+                    if (isKasir! == "null") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      );
+                    } else if (isKasir!) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

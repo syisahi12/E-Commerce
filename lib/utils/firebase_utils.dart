@@ -7,17 +7,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+class HasilPencarian {
+  final bool ketemu;
+  final String kembalikan;
+
+  HasilPencarian(this.ketemu, this.kembalikan);
+}
+
 class FirebaseUtils {
   final firestore = FirebaseFirestore.instance;
   final storage = const FlutterSecureStorage();
   late String dataKoleksi;
 
-  Future<bool> login(
+  Future login(
     BuildContext context,
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
-    bool isKasir;
+    HasilPencarian isKasir;
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
@@ -27,17 +34,18 @@ class FirebaseUtils {
                 SnackBar(content: Text("Error ${onError.toString()}")))
           },
         );
-    final firebaseUtils = FirebaseUtils();
-    isKasir = await firebaseUtils.searchDocument(
-        emailController.text, 'users', 'kasir');
-    if (isKasir) {
+    isKasir = await searchDocument(emailController.text, 'users', 'kasir');
+    if (isKasir.ketemu) {
       return true;
     } else {
+      if (isKasir.kembalikan == "null") {
+        return isKasir.kembalikan;
+      }
       return false;
     }
   }
 
-  Future<bool> searchDocument(
+  Future<HasilPencarian> searchDocument(
       String email, String koleksi1, String koleksi2) async {
     // Menggunakan query where() untuk mencari document di koleksi pertama
     var snapshot = await firestore
@@ -49,7 +57,7 @@ class FirebaseUtils {
       print('Document1 ada di $koleksi1');
       dataKoleksi = koleksi1;
       storage.write(key: 'dataKoleksi', value: dataKoleksi);
-      return false;
+      return HasilPencarian(false, "users");
     } else {
       // Menggunakan query where() untuk mencari document di koleksi kedua
       snapshot = await firestore
@@ -62,10 +70,11 @@ class FirebaseUtils {
         dataKoleksi = koleksi2;
         storage.write(key: 'dataKoleksi', value: dataKoleksi);
         print(dataKoleksi);
-        return true;
+        return HasilPencarian(true, "kasir");
       } else {
         print('Document1 tidak ditemukan di $koleksi1 atau $koleksi2');
-        return false;
+        String kembalikan = "error";
+        return HasilPencarian(false, "null");
       }
     }
   }
