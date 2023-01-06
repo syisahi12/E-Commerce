@@ -29,6 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     await storage.delete(key: 'dataKoleksi');
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,

@@ -1,3 +1,4 @@
+import 'package:final_project/screens/cashier_screen.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/profile/profile_screen.dart';
 import 'package:final_project/screens/signup_screen.dart';
@@ -62,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfileScreen()),
+                            builder: (context) => CashierScreen()),
                       );
                     } else {
                       Navigator.push(
