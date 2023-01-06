@@ -21,6 +21,13 @@ class _SignInScreenState extends State<SignInScreen> {
   var isKasir;
 
   @override
+  void dispose() {
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
