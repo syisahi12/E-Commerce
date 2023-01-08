@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CityCard extends StatelessWidget {
   final City city;
 
-  CityCard(this.city);
+  const CityCard(this.city);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class CityCard extends StatelessWidget {
       child: Container(
         height: 90,
         width: 80,
-        color: Color(0xffF6F7F8),
+        color: const Color(0xffF6F7F8),
         child: Column(
           children: [
             Stack(
@@ -33,7 +33,7 @@ class CityCard extends StatelessWidget {
                           height: 30,
                           decoration: BoxDecoration(
                             color: purpleColor,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(36),
                             ),
                           ),
@@ -49,7 +49,7 @@ class CityCard extends StatelessWidget {
                     : Container(),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:final_project/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +20,7 @@ class CashierScreen extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(color: Colors.green),
+        decoration: const BoxDecoration(color: Colors.green),
         padding: EdgeInsets.fromLTRB(
             20, MediaQuery.of(context).size.height * 0.15, 20, 0),
         child: Column(
@@ -48,54 +46,60 @@ class CashierScreen extends StatelessWidget {
               height: 15.0,
             ),
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "List Order",
                 style: whiteTextStyle.copyWith(
                     fontSize: 36, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: const BoxDecoration(color: Colors.white),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Details",
-                    style: blackTextStyle.copyWith(fontSize: 24.0),
-                  ),
-                  Text(
-                    "Confirm",
-                    style: blackTextStyle,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Container(
-                decoration: const BoxDecoration(color: Colors.white),
-                child: SingleChildScrollView(
+            Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(color: Colors.white),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            detailsContainer(),
-                            detailsContainer(),
-                            detailsContainer(),
-                            detailsContainer(),
-                            detailsContainer(),
-                          ],
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Details",
+                            style: blackTextStyle.copyWith(fontSize: 24.0),
+                          ),
+                          Text(
+                            "Confirm",
+                            style: blackTextStyle,
+                          ),
+                        ],
                       ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height - 500,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  children: [
+                                    detailsContainer(),
+                                    detailsContainer(),
+                                    detailsContainer(),
+                                    detailsContainer(),
+                                    detailsContainer(),
+                                    detailsContainer(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-              ),
-            )
+              ],
+            ),
           ],
         ),
       ),
@@ -104,11 +108,11 @@ class CashierScreen extends StatelessWidget {
 
   Container detailsContainer() {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
           color: Colors.green, borderRadius: BorderRadius.circular(13)),
       height: 65,
-      padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
+      padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -154,7 +158,7 @@ class CashierScreen extends StatelessWidget {
       width: 150,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(25)),
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,5 @@
 // ignore_for_file: implementation_imports, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/screens/checkout_screen.dart';
@@ -69,17 +68,17 @@ class MainScreen extends StatelessWidget {
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                       prefixIcon: Container(
                         padding: EdgeInsets.all(15),
+                        width: 18,
                         child: Icon(
                           Icons.search,
                           size: 30,
                         ),
-                        width: 18,
                       )),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                Container(
+                SizedBox(
                   height: 150,
                   child: ListView(
                     scrollDirection: Axis.horizontal,

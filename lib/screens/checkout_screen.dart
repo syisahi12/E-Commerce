@@ -8,7 +8,7 @@ class CheckOut extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff39A848),
+          backgroundColor: const Color(0xff39A848),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -88,11 +88,14 @@ class CheckOut extends StatelessWidget {
                         const Text("Transaksi"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Qty (1 item)"), Text("Rp. 12.000")],
+                          children: const [
+                            Text("Qty (1 item)"),
+                            Text("Rp. 12.000")
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Harga"), Text("Rp. 12.000")],
+                          children: const [Text("Harga"), Text("Rp. 12.000")],
                         )
                       ],
                     ),

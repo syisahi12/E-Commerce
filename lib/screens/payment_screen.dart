@@ -1,7 +1,5 @@
 import 'package:final_project/utils/tripay.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Payment extends StatelessWidget {
   const Payment({super.key});
@@ -76,7 +74,7 @@ class Payment extends StatelessWidget {
                   child: Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text("Ambil Di Toko"), Text("Dewa")],
+                      children: const [Text("Ambil Di Toko"), Text("Dewa")],
                     ),
                   )),
               Padding(
@@ -90,11 +88,14 @@ class Payment extends StatelessWidget {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Qty (1 item)"), Text("Rp. 12.000")],
+                          children: const [
+                            Text("Qty (1 item)"),
+                            Text("Rp. 12.000")
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Delivery Fee"), Text("Info")],
+                          children: const [Text("Delivery Fee"), Text("Info")],
                         )
                       ],
                     ),

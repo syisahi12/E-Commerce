@@ -8,13 +8,15 @@ import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
   @override
   State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
   String data = "users";
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   Future<String> _loadData() async {
     data = (await storage.read(key: 'dataKoleksi'))!;
     return data;
@@ -26,11 +28,11 @@ class _BodyState extends State<Body> {
         future: _loadData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: Column(
               children: [
-                ProfilePic(),
-                SizedBox(height: 15),
+                const ProfilePic(),
+                const SizedBox(height: 15),
                 FirebaseUtils().userFire(dataKoleksi: data),
                 const SizedBox(
                   height: 30.0,

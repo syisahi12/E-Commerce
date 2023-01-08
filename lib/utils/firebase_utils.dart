@@ -73,7 +73,6 @@ class FirebaseUtils {
         return HasilPencarian(true, "kasir");
       } else {
         print('Document1 tidak ditemukan di $koleksi1 atau $koleksi2');
-        String kembalikan = "error";
         return HasilPencarian(false, "null");
       }
     }

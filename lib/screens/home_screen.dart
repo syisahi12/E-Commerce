@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/screens/checkout_screen.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Text("");
+                    return const Text("");
                   }
                   return Text(snapshot.data?.docs[0]['username']);
                 },
