@@ -53,52 +53,54 @@ class CashierScreen extends StatelessWidget {
                     fontSize: 36, fontWeight: FontWeight.bold),
               ),
             ),
-            Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: Column(
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Text(
+                        "Details",
+                        style: blackTextStyle.copyWith(fontSize: 24.0),
+                      ),
+                      Text(
+                        "Confirm",
+                        style: blackTextStyle,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    child: SingleChildScrollView(
+                      child: Column(
                         children: [
-                          Text(
-                            "Details",
-                            style: blackTextStyle.copyWith(fontSize: 24.0),
-                          ),
-                          Text(
-                            "Confirm",
-                            style: blackTextStyle,
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              children: [
+                                detailsContainer(),
+                                detailsContainer(),
+                                detailsContainer(),
+                                detailsContainer(),
+                                detailsContainer(),
+                                detailsContainer(),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 500,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Column(
-                                  children: [
-                                    detailsContainer(),
-                                    detailsContainer(),
-                                    detailsContainer(),
-                                    detailsContainer(),
-                                    detailsContainer(),
-                                    detailsContainer(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
