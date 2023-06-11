@@ -1,4 +1,3 @@
-import 'package:final_project/theme.dart';
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatelessWidget {

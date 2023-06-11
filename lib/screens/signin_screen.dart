@@ -4,6 +4,7 @@ import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signup_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/firebase_utils.dart';
@@ -66,24 +67,27 @@ class _SignInScreenState extends State<SignInScreen> {
                     final firebaseUtils = FirebaseUtils();
                     isKasir = await firebaseUtils.login(
                         context, _emailTextController, _passwordTextController);
-                    if (isKasir! == "null") {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUpScreen()),
-                      );
-                    } else if (isKasir!) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CashierScreen()),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainScreen()),
-                      );
+
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      if (isKasir! == "null") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpScreen()),
+                        );
+                      } else if (isKasir!) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CashierScreen()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                        );
+                      }
                     }
                   },
                 ),
