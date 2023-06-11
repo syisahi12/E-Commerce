@@ -1,4 +1,6 @@
+import 'package:final_project/screens/signin_screen.dart';
 import 'package:final_project/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CashierScreen extends StatelessWidget {
@@ -16,6 +18,14 @@ class CashierScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: const [],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () =>
+                FirebaseAuth.instance.signOut().then((value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignInScreen()),
+                    ))),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
