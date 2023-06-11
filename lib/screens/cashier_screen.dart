@@ -19,13 +19,14 @@ class CashierScreen extends StatelessWidget {
         elevation: 0,
         actions: const [],
         leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () =>
-                FirebaseAuth.instance.signOut().then((value) => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignInScreen()),
-                    ))),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => FirebaseAuth.instance.signOut().then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                ),
+              ),
+        ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
