@@ -20,6 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   var isKasir;
+  var isLogin;
 
   @override
   void dispose() {
@@ -60,37 +61,34 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                signInUpButton(
-                  context,
-                  true,
-                  () async {
-                    final firebaseUtils = FirebaseUtils();
-                    isKasir = await firebaseUtils.login(
-                        context, _emailTextController, _passwordTextController);
+                signInUpButton(context, true, () async {
+                  final firebaseUtils = FirebaseUtils();
 
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      if (isKasir! == "null") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpScreen()),
-                        );
-                      } else if (isKasir!) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CashierScreen()),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
-                        );
-                      }
-                    }
-                  },
-                ),
+                  isKasir = await firebaseUtils
+                      .login(context, _emailTextController,
+                          _passwordTextController)
+                      .onError((error, stackTrace) =>
+                          Future.error(error.hashCode).then((value) => "null"));
+                  if (isKasir! == "null") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()),
+                    );
+                  } else if (isKasir!) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CashierScreen()),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
+                    );
+                  }
+                }),
                 const SizedBox(
                   height: 20.0,
                 ),
