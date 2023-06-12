@@ -40,8 +40,10 @@ class CashierScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                boxRectangle("Orders", "25"),
-                boxRectangle("Buyers", "10")
+                boxRectangle("Orders", "25",
+                    height: MediaQuery.of(context).size.height / 7),
+                boxRectangle("Buyers", "10",
+                    height: MediaQuery.of(context).size.height / 7)
               ],
             ),
             const SizedBox(
@@ -50,7 +52,8 @@ class CashierScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: boxRectangle("Total IDR", "572.810", height: 100)),
+                    child: boxRectangle("Total IDR", "572.810",
+                        height: MediaQuery.of(context).size.height / 8)),
               ],
             ),
             const SizedBox(
@@ -66,6 +69,7 @@ class CashierScreen extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: MediaQuery.of(context).size.height / 2.25,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
@@ -89,7 +93,7 @@ class CashierScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.36,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
