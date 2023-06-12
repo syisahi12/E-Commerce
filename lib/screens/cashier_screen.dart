@@ -53,7 +53,7 @@ class CashierScreen extends StatelessWidget {
               children: [
                 Expanded(
                     child: boxRectangle("Total IDR", "572.810",
-                        height: MediaQuery.of(context).size.height / 8)),
+                        height: MediaQuery.of(context).size.height / 7)),
               ],
             ),
             const SizedBox(
@@ -64,7 +64,7 @@ class CashierScreen extends StatelessWidget {
               child: Text(
                 "List Order",
                 style: whiteTextStyle.copyWith(
-                    fontSize: 36, fontWeight: FontWeight.bold),
+                    fontSize: 26, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
@@ -128,7 +128,7 @@ class CashierScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
           color: Colors.green, borderRadius: BorderRadius.circular(13)),
-      height: 65,
+      height: 80,
       padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,7 +189,7 @@ class CashierScreen extends StatelessWidget {
           Text(
             body,
             style: blackTextStyle.copyWith(
-              fontSize: 40,
+              fontSize: 30,
             ),
           ),
           const SizedBox(
