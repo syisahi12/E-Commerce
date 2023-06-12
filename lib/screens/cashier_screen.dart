@@ -19,13 +19,14 @@ class CashierScreen extends StatelessWidget {
         elevation: 0,
         actions: const [],
         leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () =>
-                FirebaseAuth.instance.signOut().then((value) => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignInScreen()),
-                    ))),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => FirebaseAuth.instance.signOut().then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                ),
+              ),
+        ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -39,8 +40,10 @@ class CashierScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                boxRectangle("Orders", "25"),
-                boxRectangle("Buyers", "10")
+                boxRectangle("Orders", "25",
+                    height: MediaQuery.of(context).size.height / 7),
+                boxRectangle("Buyers", "10",
+                    height: MediaQuery.of(context).size.height / 7)
               ],
             ),
             const SizedBox(
@@ -49,7 +52,8 @@ class CashierScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: boxRectangle("Total IDR", "572.810", height: 100)),
+                    child: boxRectangle("Total IDR", "572.810",
+                        height: MediaQuery.of(context).size.height / 7)),
               ],
             ),
             const SizedBox(
@@ -60,11 +64,12 @@ class CashierScreen extends StatelessWidget {
               child: Text(
                 "List Order",
                 style: whiteTextStyle.copyWith(
-                    fontSize: 36, fontWeight: FontWeight.bold),
+                    fontSize: 26, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: MediaQuery.of(context).size.height / 2.25,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
@@ -88,7 +93,7 @@ class CashierScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.36,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -123,7 +128,7 @@ class CashierScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
           color: Colors.green, borderRadius: BorderRadius.circular(13)),
-      height: 65,
+      height: 80,
       padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +189,7 @@ class CashierScreen extends StatelessWidget {
           Text(
             body,
             style: blackTextStyle.copyWith(
-              fontSize: 40,
+              fontSize: 30,
             ),
           ),
           const SizedBox(
