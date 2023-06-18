@@ -8,5 +8,9 @@ var admins = [
   AdminModel(name: 'Dewa'),
   AdminModel(name: 'Marwan'),
   AdminModel(name: 'Ammar'),
+  AdminModel(name: 'Asnan'),
+  AdminModel(name: 'Dewa'),
+  AdminModel(name: 'Marwan'),
+  AdminModel(name: 'Ammar'),
   AdminModel(name: 'Asnan')
 ];

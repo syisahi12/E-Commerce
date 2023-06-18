@@ -101,7 +101,7 @@ class AdminScreen extends StatelessWidget {
   ListView _admins() {
     return ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        physics: NeverScrollableScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) => _admin(admins[index]),
         separatorBuilder: (context, index) => SizedBox(
