@@ -57,7 +57,25 @@ class AdminScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
                     color: Colors.white),
-                child: _admins(),
+                child: FutureBuilder<List<AdminModel>>(
+                  future: getAdminsFromFirestore(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasData) {
+                      final admins = snapshot.data!;
+                      return _admins(admins);
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
               ),
             ),
             SizedBox(
@@ -98,16 +116,29 @@ class AdminScreen extends StatelessWidget {
     );
   }
 
-  ListView _admins() {
+  Future<List<AdminModel>> getAdminsFromFirestore() async {
+    final adminsSnapshot =
+        await FirebaseFirestore.instance.collection('kasir').get();
+
+    final admins = adminsSnapshot.docs.map((doc) {
+      final name = doc.data()['username'] as String;
+      return AdminModel(name: name);
+    }).toList();
+
+    return admins;
+  }
+
+  ListView _admins(List<AdminModel> admins) {
     return ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        physics: AlwaysScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) => _admin(admins[index]),
-        separatorBuilder: (context, index) => SizedBox(
-              height: 11,
-            ),
-        itemCount: admins.length);
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      physics: AlwaysScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) => _admin(admins[index]),
+      separatorBuilder: (context, index) => SizedBox(
+        height: 11,
+      ),
+      itemCount: admins.length,
+    );
   }
 
   Container _admin(AdminModel adminModel) {
