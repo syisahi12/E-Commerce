@@ -24,7 +24,7 @@ class AdminScreen extends StatelessWidget {
             20, MediaQuery.of(context).size.height * 0.15, 20, 0),
         child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [Text("test")]),
+            children: [Text("test!")]),
       ),
     );
   }
