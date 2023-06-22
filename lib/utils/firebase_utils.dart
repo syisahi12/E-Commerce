@@ -124,6 +124,8 @@ class FirebaseUtils {
   }
 }
 
+final auth = FirebaseAuth.instance;
+
 Future<void> deleteDocumentByIndex(int index, String collectionName) async {
   final querySnapshot = await FirebaseFirestore.instance
       .collection(collectionName)
@@ -140,8 +142,7 @@ Future<void> deleteDocumentByIndex(int index, String collectionName) async {
 // Menghapus pengguna dari Firebase
 Future<void> deleteAccount(String email, String password) async {
   try {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -152,6 +153,96 @@ Future<void> deleteAccount(String email, String password) async {
     print('Akun pengguna berhasil dihapus');
   } catch (e) {
     print('Terjadi kesalahan saat menghapus akun pengguna: $e');
+  }
+}
+
+Future<UserCredential> loginByEmail(String email, String password) async {
+  try {
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential;
+  } catch (e) {
+    // Handle login error
+    print('Error logging in: $e');
+    throw e;
+  }
+}
+
+Future<void> updatePassword(String newPassword) async {
+  try {
+    User? user = auth.currentUser;
+    if (user != null) {
+      await user.updatePassword(newPassword);
+    } else {
+      throw Exception('User not authenticated');
+    }
+  } catch (e) {
+    // Handle password update error
+    print('Error updating password: $e');
+    throw e;
+  }
+}
+
+Future<void> updateDocumentByEmail(
+    String newPassword, String collection, String email) async {
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection)
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      // Jika ditemukan dokumen dengan email yang cocok
+      QueryDocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+      String documentId = documentSnapshot.id;
+
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(documentId)
+          .update({'password': newPassword});
+    } else {
+      // Jika tidak ada dokumen dengan email yang cocok
+      print('Document not found for email: $email');
+      // Handle not found error
+    }
+  } catch (e) {
+    // Handle document update error
+    print('Error updating document: $e');
+    throw e;
+  }
+}
+
+class FbAddCahier {
+  static Future<UserCredential> registerUser(
+      String email, String password) async {
+    try {
+      return await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      throw Exception('Error registering user: $e');
+    }
+  }
+
+  static Future<void> addKasir(
+      String name, String email, String password) async {
+    try {
+      // Generate unique document ID
+      String documentId =
+          FirebaseFirestore.instance.collection('kasir').doc().id;
+
+      // Create new document with unique ID
+      await FirebaseFirestore.instance.collection('kasir').doc(documentId).set({
+        'username': name,
+        'email': email,
+        'password': password,
+      });
+    } catch (e) {
+      throw Exception('Error adding kasir: $e');
+    }
   }
 }
 
