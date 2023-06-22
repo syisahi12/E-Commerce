@@ -89,38 +89,35 @@ class AdminScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AddKasirPopup();
-                        },
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        children: [
-                          Text("Add Kasir",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500)),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2)),
-                          SvgPicture.asset(
-                            'assets/icons/add.svg',
-                            height: 25,
-                          ),
-                        ],
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AddKasirPopup();
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      children: [
+                        Text("Add Kasir",
+                            style: GoogleFonts.montserrat(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                        const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2)),
+                        SvgPicture.asset(
+                          'assets/icons/add.svg',
+                          height: 25,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -154,90 +151,87 @@ class AdminScreen extends StatelessWidget {
       decoration: BoxDecoration(
           color: const Color(0xFF39A848),
           borderRadius: BorderRadius.circular(14)),
-      child: Flexible(
-        fit: FlexFit.tight,
-        child: Row(children: [
-          Text(adminModel.name,
-              style: GoogleFonts.montserrat(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700)),
-          const Spacer(),
-          Builder(builder: (context) {
-            return GestureDetector(
-              onTap: () async {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Edit Data'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextField(
-                            controller: newPasswordController,
-                            decoration: InputDecoration(
-                              labelText: 'New Password',
-                            ),
+      child: Row(children: [
+        Text(adminModel.name,
+            style: GoogleFonts.montserrat(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.w700)),
+        const Spacer(),
+        Builder(builder: (context) {
+          return GestureDetector(
+            onTap: () async {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Edit Data'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: newPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'New Password',
                           ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          child: Text('Save'),
-                          onPressed: () async {
-                            // Ambil email dan password dari Firestore
-                            String email = adminModel.email;
-                            String password = adminModel.password;
-
-                            // Login dengan email dan password
-                            await loginByEmail(email, password);
-
-                            // Ganti password
-                            String newPassword = newPasswordController.text;
-                            await updatePassword(newPassword);
-
-                            // Update password di Firestore
-                            adminModel.password = newPassword;
-                            await updateDocumentByEmail(
-                              newPassword,
-                              'kasir',
-                              adminModel.email,
-                            );
-
-                            // Tutup dialog
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
                         ),
                       ],
-                    );
-                  },
-                );
-              },
-              child: Image.asset(
-                'assets/images/edit.png',
-                width: 40,
-              ),
-            );
-          }),
-          GestureDetector(
-            onTap: () async {
-              await deleteDocumentByIndex(index, "kasir");
-              await deleteAccount(adminModel.email, adminModel.password);
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text('Save'),
+                        onPressed: () async {
+                          // Ambil email dan password dari Firestore
+                          String email = adminModel.email;
+                          String password = adminModel.password;
+
+                          // Login dengan email dan password
+                          await loginByEmail(email, password);
+
+                          // Ganti password
+                          String newPassword = newPasswordController.text;
+                          await updatePassword(newPassword);
+
+                          // Update password di Firestore
+                          adminModel.password = newPassword;
+                          await updateDocumentByEmail(
+                            newPassword,
+                            'kasir',
+                            adminModel.email,
+                          );
+
+                          // Tutup dialog
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
             child: Image.asset(
-              'assets/images/trash.png',
+              'assets/images/edit.png',
               width: 40,
             ),
+          );
+        }),
+        GestureDetector(
+          onTap: () async {
+            await deleteDocumentByIndex(index, "kasir");
+            await deleteAccount(adminModel.email, adminModel.password);
+          },
+          child: Image.asset(
+            'assets/images/trash.png',
+            width: 40,
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }
