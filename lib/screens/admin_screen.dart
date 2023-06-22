@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/models/admin_model.dart';
@@ -62,12 +61,6 @@ class AdminScreen extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final cashiersDatas = snapshot.data!;
-                      final cashier = cashiersDatas
-                          .map((e) => AdminModel(
-                              name: e.name,
-                              email: e.email,
-                              password: e.password))
-                          .toList();
 
                       return _admins(cashiersDatas);
                     } else if (snapshot.hasError) {

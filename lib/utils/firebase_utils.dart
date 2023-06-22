@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/theme.dart';
-import 'package:firebase_admin/testing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -28,12 +26,13 @@ class FirebaseUtils {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
-        .catchError(
-          (onError) => {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Error ${onError.toString()}")))
-          },
-        );
+        .catchError((onError) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error ${onError.toString()}"),
+        duration: const Duration(seconds: 3),
+      ));
+      throw onError; // Rethrow the error
+    });
     isKasir = await searchDocument(emailController.text, 'users', 'kasir');
     if (isKasir.ketemu) {
       return true;
