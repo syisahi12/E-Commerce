@@ -5,6 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+enum UserRole {
+  admin,
+  users,
+  kasir,
+  anon,
+}
+
 class HasilPencarian {
   final bool ketemu;
   final String kembalikan;
@@ -145,5 +152,30 @@ Future<void> deleteAccount(String email, String password) async {
     print('Akun pengguna berhasil dihapus');
   } catch (e) {
     print('Terjadi kesalahan saat menghapus akun pengguna: $e');
+  }
+}
+
+Future<UserRole> getUserRole(String email) async {
+  QuerySnapshot adminSnapshot = await FirebaseFirestore.instance
+      .collection('admin')
+      .where('email', isEqualTo: email)
+      .get();
+  QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .where('email', isEqualTo: email)
+      .get();
+  QuerySnapshot kasirSnapshot = await FirebaseFirestore.instance
+      .collection('kasir')
+      .where('email', isEqualTo: email)
+      .get();
+
+  if (adminSnapshot.docs.isNotEmpty) {
+    return UserRole.admin;
+  } else if (kasirSnapshot.docs.isNotEmpty) {
+    return UserRole.kasir;
+  } else if (userSnapshot.docs.isNotEmpty) {
+    return UserRole.users;
+  } else {
+    return UserRole.anon; // Set default role if not found in any collection
   }
 }

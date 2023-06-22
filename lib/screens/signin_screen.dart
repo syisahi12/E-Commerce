@@ -19,8 +19,6 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  var isKasir;
-  var isLogin;
 
   @override
   void dispose() {
@@ -31,6 +29,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String _errorMessage = '';
+    bool _isLoading = false;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -62,34 +62,64 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 20.0,
                 ),
                 signInUpButton(context, true, () async {
-                  final firebaseUtils = FirebaseUtils();
-
-                  isKasir = await firebaseUtils
-                      .login(context, _emailTextController,
-                          _passwordTextController)
-                      .onError((error, stackTrace) =>
-                          Future.error(error.hashCode).then((value) => "null"));
-
-                  if (!(isKasir! == "null" ||
-                      FirebaseAuth.instance.currentUser != null)) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()),
+                  setState(() {
+                    _isLoading = true;
+                    _errorMessage = '';
+                  });
+                  try {
+                    UserCredential userCredential =
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailTextController.text.trim(),
+                      password: _passwordTextController.text.trim(),
                     );
-                  } else if (isKasir!) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CashierScreen()),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+
+                    String email = userCredential.user!.email!;
+                    UserRole userRole = await getUserRole(email);
+
+                    if (userRole == UserRole.admin) {
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                            return const AdminScreen();
+                          }),
+                        );
+                      }
+                    } else if (userRole == UserRole.kasir) {
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CashierScreen()),
+                        );
+                      }
+                    } else if (userRole == UserRole.users) {
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                        );
+                      }
+                    }
+                  } catch (error) {
+                    setState(() {
+                      _errorMessage =
+                          'Login failed. Please check your email and password.';
+                    });
+                    // Mengambil pesan kesalahan dari Firebase
+                    String firebaseErrorMessage = error.toString();
+
+                    // Menampilkan pesan kesalahan dalam Snackbar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(firebaseErrorMessage),
+                      ),
                     );
                   }
+                  setState(() {
+                    _isLoading = false;
+                  });
                 }),
                 const SizedBox(
                   height: 20.0,
@@ -153,9 +183,9 @@ Container adminButton(BuildContext context, Function onTap) {
           }),
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
-      child: Text(
+      child: const Text(
         'ADMIN',
-        style: const TextStyle(
+        style: TextStyle(
             color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
       ),
     ),
