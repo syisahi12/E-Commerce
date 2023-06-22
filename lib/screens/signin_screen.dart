@@ -4,6 +4,7 @@ import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/screens/signup_screen.dart';
 import 'package:final_project/utils/color_utils.dart';
 import 'package:final_project/widgets/reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/firebase_utils.dart';
@@ -68,7 +69,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           _passwordTextController)
                       .onError((error, stackTrace) =>
                           Future.error(error.hashCode).then((value) => "null"));
-                  if (isKasir! == "null") {
+
+                  if (!(isKasir! == "null" ||
+                      FirebaseAuth.instance.currentUser != null)) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -86,6 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       MaterialPageRoute(
                           builder: (context) => const MainScreen()),
                     );
+                    if (FirebaseAuth.instance.currentUser != null) {}
                   }
                 }),
                 const SizedBox(
