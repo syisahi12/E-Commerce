@@ -1,9 +1,9 @@
-// ignore_for_file: invalid_return_type_for_catch_error
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/theme.dart';
+import 'package:firebase_admin/testing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -115,5 +115,36 @@ class FirebaseUtils {
         }
       },
     );
+  }
+}
+
+Future<void> deleteDocumentByIndex(int index, String collectionName) async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection(collectionName)
+      .limit(1)
+      .get();
+
+  final documents = querySnapshot.docs;
+  if (documents.length > index) {
+    final documentToDelete = documents[index];
+    await documentToDelete.reference.delete();
+  }
+}
+
+// Menghapus pengguna dari Firebase
+Future<void> deleteAccount(String email, String password) async {
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Menghapus akun pengguna yang masuk
+    await userCredential.user?.delete();
+
+    print('Akun pengguna berhasil dihapus');
+  } catch (e) {
+    print('Terjadi kesalahan saat menghapus akun pengguna: $e');
   }
 }

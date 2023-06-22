@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/models/admin_model.dart';
+import 'package:final_project/utils/firebase_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,7 @@ class AdminScreen extends StatelessWidget {
               width: 100,
               height: 100,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -46,7 +47,7 @@ class AdminScreen extends StatelessWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.w500),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             AspectRatio(
@@ -56,22 +57,23 @@ class AdminScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
                     color: Colors.white),
-                child: FutureBuilder<List<AdminModel>>(
-                  future: getAdminsFromFirestore(),
+                child: StreamBuilder<List<AdminModel>>(
+                  stream: getCashierFromFirestore(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasData) {
-                      final admins = snapshot.data!;
-                      return _admins(admins);
+                    if (snapshot.hasData) {
+                      final cashiersDatas = snapshot.data!;
+                      final cashier = cashiersDatas
+                          .map((e) => AdminModel(
+                              name: e.name,
+                              email: e.email,
+                              password: e.password))
+                          .toList();
+
+                      return _admins(cashiersDatas);
                     } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error: ${snapshot.error}'),
-                      );
+                      return Text('Error: ${snapshot.error}');
                     } else {
-                      return Container();
+                      return CircularProgressIndicator();
                     }
                   },
                 ),
@@ -107,7 +109,7 @@ class AdminScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -115,32 +117,20 @@ class AdminScreen extends StatelessWidget {
     );
   }
 
-  Future<List<AdminModel>> getAdminsFromFirestore() async {
-    final adminsSnapshot =
-        await FirebaseFirestore.instance.collection('kasir').get();
-
-    final admins = adminsSnapshot.docs.map((doc) {
-      final name = doc.data()['username'] as String;
-      return AdminModel(name: name);
-    }).toList();
-
-    return admins;
-  }
-
-  ListView _admins(List<AdminModel> admins) {
+  ListView _admins(List<AdminModel> cashier) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      physics: AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      physics: const AlwaysScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (context, index) => _admin(admins[index]),
-      separatorBuilder: (context, index) => SizedBox(
+      itemBuilder: (context, index) => _admin(cashier[index], index),
+      separatorBuilder: (context, index) => const SizedBox(
         height: 11,
       ),
-      itemCount: admins.length,
+      itemCount: cashier.length,
     );
   }
 
-  Container _admin(AdminModel adminModel) {
+  Container _admin(AdminModel adminModel, int index) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -158,9 +148,16 @@ class AdminScreen extends StatelessWidget {
             'assets/images/edit.png',
             width: 40,
           ),
-          Image.asset(
-            'assets/images/trash.png',
-            width: 40,
+          GestureDetector(
+            onTap: () async {
+              print(index);
+              await deleteDocumentByIndex(index, "kasir");
+              await deleteAccount(adminModel.email, adminModel.password);
+            },
+            child: Image.asset(
+              'assets/images/trash.png',
+              width: 40,
+            ),
           ),
         ]),
       ),
