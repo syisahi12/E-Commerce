@@ -89,7 +89,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       MaterialPageRoute(
                           builder: (context) => const MainScreen()),
                     );
-                    if (FirebaseAuth.instance.currentUser != null) {}
                   }
                 }),
                 const SizedBox(
