@@ -1,7 +1,9 @@
 import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/models/admin_model.dart';
+import 'package:final_project/screens/signin_screen.dart';
 import 'package:final_project/utils/firebase_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +23,15 @@ class AdminScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: const [],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => FirebaseAuth.instance.signOut().then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                ),
+              ),
+        ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
