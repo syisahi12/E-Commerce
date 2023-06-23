@@ -1,6 +1,7 @@
 import 'package:final_project/components/coustom_bottom_nav_bar.dart';
 import 'package:final_project/enums.dart';
 import 'package:final_project/models/admin_model.dart';
+import 'package:final_project/screens/iot/cashier_screen.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:final_project/utils/firebase_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  AdminScreen({Key? key}) : super(key: key);
+  final controller = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -33,101 +35,106 @@ class AdminScreen extends StatelessWidget {
               ),
         ),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(color: Colors.green),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 140,
-            ),
-            SvgPicture.asset(
-              'assets/icons/profil.svg',
-              width: 100,
-              height: 100,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Admin",
-              style: GoogleFonts.montserrat(
-                  fontSize: 33,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            AspectRatio(
-              aspectRatio: 335 / 250,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 28),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.white),
-                child: StreamBuilder<List<AdminModel>>(
-                  stream: getCashierFromFirestore(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final cashiersDatas = snapshot.data!;
-
-                      return _admins(cashiersDatas);
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      body: PageView(
+        controller: controller,
+        scrollDirection: Axis.vertical,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(color: Colors.green),
+            child: Column(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AddKasirPopup();
-                      },
-                    );
-                  },
+                const SizedBox(
+                  height: 140,
+                ),
+                SvgPicture.asset(
+                  'assets/icons/profil.svg',
+                  width: 100,
+                  height: 100,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Admin",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 33,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AspectRatio(
+                  aspectRatio: 335 / 250,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 28),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      children: [
-                        Text("Add Kasir",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500)),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2)),
-                        SvgPicture.asset(
-                          'assets/icons/add.svg',
-                          height: 25,
-                        ),
-                      ],
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.white),
+                    child: StreamBuilder<List<AdminModel>>(
+                      stream: getCashierFromFirestore(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final cashiersDatas = snapshot.data!;
+
+                          return _admins(cashiersDatas);
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddKasirPopup();
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          children: [
+                            Text("Add Kasir",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500)),
+                            const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2)),
+                            SvgPicture.asset(
+                              'assets/icons/add.svg',
+                              height: 25,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          const IotScreen()
+        ],
       ),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.admin),
     );
   }
 
@@ -223,8 +230,8 @@ class AdminScreen extends StatelessWidget {
         }),
         GestureDetector(
           onTap: () async {
-            await deleteDocumentByIndex(index, "kasir");
             await deleteAccount(adminModel.email, adminModel.password);
+            await deleteDocumentByIndex(index, "kasir");
           },
           child: Image.asset(
             'assets/images/trash.png',

@@ -127,11 +127,9 @@ class FirebaseUtils {
 final auth = FirebaseAuth.instance;
 
 Future<void> deleteDocumentByIndex(int index, String collectionName) async {
-  final querySnapshot = await FirebaseFirestore.instance
-      .collection(collectionName)
-      .limit(1)
-      .get();
-
+  final querySnapshot =
+      await FirebaseFirestore.instance.collection(collectionName).get();
+  print("object");
   final documents = querySnapshot.docs;
   if (documents.length > index) {
     final documentToDelete = documents[index];

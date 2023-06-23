@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/theme.dart';
 import 'package:flutter/material.dart';
 
-class CashierScreen extends StatefulWidget {
-  const CashierScreen({Key? key}) : super(key: key);
+class IotScreen extends StatefulWidget {
+  const IotScreen({Key? key}) : super(key: key);
 
   @override
-  State<CashierScreen> createState() => _CashierScreenState();
+  State<IotScreen> createState() => _IotScreenState();
 }
 
-class _CashierScreenState extends State<CashierScreen> {
+class _IotScreenState extends State<IotScreen> {
   String _leadeingHour = "";
   String _minute = "";
   Timer? _timer;
@@ -44,15 +44,6 @@ class _CashierScreenState extends State<CashierScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text(
-          "Kasir",
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: const [],
-      ),
       body: StreamBuilder<QuerySnapshot>(
           stream:
               FirebaseFirestore.instance.collection("pengunjung").snapshots(),
@@ -136,7 +127,7 @@ class _CashierScreenState extends State<CashierScreen> {
                             child: boxRectangle(
                                 "Pengunjung ${DateTime.now().hour > 20 || DateTime.now().hour < 7 ? "" : "Jam $_leadeingHour : $_minute"}",
                                 pengunjungDataNowHour,
-                                height: 100)),
+                                height: 130)),
                       ],
                     ),
                     const SizedBox(
@@ -147,7 +138,7 @@ class _CashierScreenState extends State<CashierScreen> {
                       child: Text(
                         "Data",
                         style: whiteTextStyle.copyWith(
-                            fontSize: 36, fontWeight: FontWeight.bold),
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(
@@ -171,7 +162,7 @@ class _CashierScreenState extends State<CashierScreen> {
                                   shrinkWrap: true,
                                   children: snapshot.data!.docs
                                       .getRange(
-                                          0, snapshot.data!.docs.length - 2)
+                                          0, snapshot.data!.docs.length - 1)
                                       .map((DocumentSnapshot document) {
                                         Map<String, dynamic> data = document
                                             .data()! as Map<String, dynamic>;
@@ -203,7 +194,7 @@ class _CashierScreenState extends State<CashierScreen> {
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
           color: Colors.green, borderRadius: BorderRadius.circular(13)),
-      height: 65,
+      height: 75,
       padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

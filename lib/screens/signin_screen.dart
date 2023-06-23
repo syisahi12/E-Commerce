@@ -81,7 +81,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                            return const AdminScreen();
+                            return AdminScreen();
                           }),
                         );
                       }
@@ -127,8 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 adminButton(context, () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminScreen()),
+                    MaterialPageRoute(builder: (context) => AdminScreen()),
                   );
                 }),
                 const SizedBox(
