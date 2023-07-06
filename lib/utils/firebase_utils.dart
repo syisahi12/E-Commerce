@@ -213,7 +213,7 @@ Future<void> updateDocumentByEmail(
 }
 
 Future<void> updateBarangByEmail(
-    String barang, String harga, String collection, String email) async {
+    String barang, int harga, String collection, String email) async {
   try {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(collection)

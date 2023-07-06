@@ -118,7 +118,7 @@ class Pembayaran extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
-              updateBarangByEmail("Gulaku 1kg", "12000", "users",
+              updateBarangByEmail("Gulaku 1kg", 12000, "users",
                   FirebaseAuth.instance.currentUser!.email!);
               Navigator.push(
                 context,
