@@ -212,6 +212,35 @@ Future<void> updateDocumentByEmail(
   }
 }
 
+Future<void> updateBarangByEmail(
+    String barang, String harga, String collection, String email) async {
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection)
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      // Jika ditemukan dokumen dengan email yang cocok
+      QueryDocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+      String documentId = documentSnapshot.id;
+
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(documentId)
+          .update({'barang': barang, 'harga': harga});
+    } else {
+      // Jika tidak ada dokumen dengan email yang cocok
+      print('Document not found for email: $email');
+      // Handle not found error
+    }
+  } catch (e) {
+    // Handle document update error
+    print('Error updating document: $e');
+    throw e;
+  }
+}
+
 class FbAddCahier {
   static Future<UserCredential> registerUser(
       String email, String password) async {

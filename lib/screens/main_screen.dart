@@ -79,7 +79,7 @@ class MainScreen extends StatelessWidget {
                   height: 20.0,
                 ),
                 SizedBox(
-                  height: 150,
+                  height: 200,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [

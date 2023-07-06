@@ -12,8 +12,8 @@ class CityCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
       child: Container(
-        height: 90,
-        width: 80,
+        height: 100,
+        width: 90,
         color: const Color(0xffF6F7F8),
         child: Column(
           children: [

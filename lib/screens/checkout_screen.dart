@@ -117,7 +117,7 @@ class CheckOut extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Payment()),
+                MaterialPageRoute(builder: (context) => const Pembayaran()),
               );
             },
             style: ElevatedButton.styleFrom(

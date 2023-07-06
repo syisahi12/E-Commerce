@@ -1,8 +1,11 @@
+import 'package:final_project/screens/main_screen.dart';
+import 'package:final_project/utils/firebase_utils.dart';
 import 'package:final_project/utils/tripay.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Payment extends StatelessWidget {
-  const Payment({super.key});
+class Pembayaran extends StatelessWidget {
+  const Pembayaran({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +118,12 @@ class Payment extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
-              getPaymentChannel('QRIS2').then((response) {
-                print(response);
-              });
+              updateBarangByEmail("Gulaku 1kg", "12000", "users",
+                  FirebaseAuth.instance.currentUser!.email!);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MainScreen()),
+              );
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
