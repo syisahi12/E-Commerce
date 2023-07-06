@@ -65,8 +65,36 @@ class _CashierScreenState extends State<CashierScreen> {
                         height: MediaQuery.of(context).size.height / 7);
                   },
                 ),
-                boxRectangle("Buyers", "10",
-                    height: MediaQuery.of(context).size.height / 7)
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collectionGroup('orders')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Terjadi kesalahan: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    final List<DocumentSnapshot> documents =
+                        snapshot.data!.docs;
+                    final Set<String> uniqueUsernames = {};
+
+                    for (var document in documents) {
+                      final username = document['username'] as String?;
+                      if (username != null) {
+                        uniqueUsernames.add(username);
+                      }
+                    }
+
+                    final int totalBuyers = uniqueUsernames.length;
+
+                    return boxRectangle("Buyers", totalBuyers.toString(),
+                        height: MediaQuery.of(context).size.height / 7);
+                  },
+                ),
               ],
             ),
             const SizedBox(
@@ -157,16 +185,22 @@ class _CashierScreenState extends State<CashierScreen> {
 
                           final List<DocumentSnapshot> documents =
                               snapshot.data!.docs;
+                          final List<Widget> containerList = [];
+                          for (var document in documents) {
+                            final harga = document['harga'];
+
+                            if (harga > 0) {
+                              containerList.add(
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: detailsContainer(document),
+                                ),
+                              );
+                            }
+                          }
                           return SingleChildScrollView(
                             child: Column(
-                              children: documents
-                                  .map(
-                                    (document) => Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: detailsContainer(document),
-                                    ),
-                                  )
-                                  .toList(),
+                              children: containerList,
                             ),
                           );
                         }),
@@ -183,6 +217,8 @@ class _CashierScreenState extends State<CashierScreen> {
   Container detailsContainer(DocumentSnapshot document) {
     final nama = document['username'];
     final harga = document['harga'];
+    final docRef =
+        FirebaseFirestore.instance.collection('users').doc(document.id);
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
@@ -232,6 +268,8 @@ class _CashierScreenState extends State<CashierScreen> {
                 'username': nama,
                 'harga': harga,
               });
+
+              await docRef.update({'harga': 0});
             },
             child: Image.asset(
               'assets/images/done.png',
