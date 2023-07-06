@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/screens/signin_screen.dart';
 import 'package:final_project/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class CashierScreen extends StatelessWidget {
+class CashierScreen extends StatefulWidget {
   const CashierScreen({Key? key}) : super(key: key);
 
+  @override
+  _CashierScreenState createState() => _CashierScreenState();
+}
+
+class _CashierScreenState extends State<CashierScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +46,25 @@ class CashierScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                boxRectangle("Orders", "25",
-                    height: MediaQuery.of(context).size.height / 7),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('orders')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Terjadi kesalahan: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+
+                    final int orderCount = snapshot.data!.docs.length;
+
+                    return boxRectangle("Orders", orderCount.toString(),
+                        height: MediaQuery.of(context).size.height / 7);
+                  },
+                ),
                 boxRectangle("Buyers", "10",
                     height: MediaQuery.of(context).size.height / 7)
               ],
@@ -52,8 +75,32 @@ class CashierScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: boxRectangle("Total IDR", "572.810",
-                        height: MediaQuery.of(context).size.height / 7)),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('orders')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Terjadi kesalahan: ${snapshot.error}');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data!.docs;
+                      int totalHarga = 0;
+                      for (var doc in documents) {
+                        final harga = doc['harga'] as int;
+                        totalHarga += harga;
+                      }
+
+                      return boxRectangle("Total IDR", "Rp $totalHarga",
+                          height: MediaQuery.of(context).size.height / 7);
+                    },
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -94,25 +141,35 @@ class CashierScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.36,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Terjadi kesalahan: ${snapshot.error}');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          final List<DocumentSnapshot> documents =
+                              snapshot.data!.docs;
+                          return SingleChildScrollView(
                             child: Column(
-                              children: [
-                                detailsContainer(),
-                                detailsContainer(),
-                                detailsContainer(),
-                                detailsContainer(),
-                                detailsContainer(),
-                                detailsContainer(),
-                              ],
+                              children: documents
+                                  .map(
+                                    (document) => Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: detailsContainer(document),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                        }),
                   )
                 ],
               ),
@@ -123,11 +180,15 @@ class CashierScreen extends StatelessWidget {
     );
   }
 
-  Container detailsContainer() {
+  Container detailsContainer(DocumentSnapshot document) {
+    final nama = document['username'];
+    final harga = document['harga'];
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
-          color: Colors.green, borderRadius: BorderRadius.circular(13)),
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(13),
+      ),
       height: 80,
       padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
       child: Row(
@@ -138,7 +199,7 @@ class CashierScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "Dewa",
+                nama,
                 style: whiteTextStyle.copyWith(
                   fontSize: 20.0,
                 ),
@@ -149,7 +210,7 @@ class CashierScreen extends StatelessWidget {
                     width: 20.0,
                   ),
                   Text(
-                    "Rp134.000",
+                    'Rp $harga',
                     style: whiteTextStyle.copyWith(
                       fontSize: 18,
                     ),
@@ -158,11 +219,24 @@ class CashierScreen extends StatelessWidget {
               ),
             ],
           ),
-          Image.asset(
-            "assets/images/done.png",
-            width: 50.0,
-            height: 50.0,
-            fit: BoxFit.fitWidth,
+          GestureDetector(
+            onTap: () async {
+              final collectionRef =
+                  FirebaseFirestore.instance.collection('orders');
+
+              final snapshot = await collectionRef.get();
+              final int orderCount = snapshot.docs.length;
+
+              await collectionRef.add({
+                'orderId': '${orderCount + 1}',
+                'username': nama,
+                'harga': harga,
+              });
+            },
+            child: Image.asset(
+              'assets/images/done.png',
+              width: 40,
+            ),
           ),
         ],
       ),
@@ -174,7 +248,9 @@ class CashierScreen extends StatelessWidget {
       height: height,
       width: 150,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+      ),
       padding: const EdgeInsets.only(top: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
