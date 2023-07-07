@@ -1,6 +1,5 @@
 import 'package:final_project/screens/main_screen.dart';
 import 'package:final_project/utils/firebase_utils.dart';
-import 'package:final_project/utils/tripay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -74,10 +73,10 @@ class Pembayaran extends StatelessWidget {
               Container(
                   height: 80,
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [Text("Ambil Di Toko"), Text("Dewa")],
+                      children: [Text("Ambil Di Toko"), Text("Dewa")],
                     ),
                   )),
               Padding(
