@@ -88,6 +88,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     FirebaseFirestore.instance.collection('users').add({
                       'username': _userNameTextController.text.trim(),
                       'email': _emailTextController.text.trim(),
+                      'barang': "",
+                      'harga': 0
                     }).then((value) {
                       Navigator.push(
                         context,

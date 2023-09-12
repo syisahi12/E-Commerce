@@ -54,6 +54,10 @@ class _IotScreenState extends State<IotScreen> {
               );
             } else {
               var items = snapshot.data;
+              items!.docs[items.docs.length - 1]
+                  .data()
+                  .toString()
+                  .contains("pengunjung_jam_$_leadeingHour");
               final pengunjungDataNowHour = items!.docs[items.docs.length - 1]
                       .data()
                       .toString()

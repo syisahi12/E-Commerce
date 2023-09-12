@@ -124,12 +124,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                adminButton(context, () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminScreen()),
-                  );
-                }),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -160,33 +154,5 @@ Row signUpOption(BuildContext context) {
         ),
       )
     ],
-  );
-}
-
-Container adminButton(BuildContext context, Function onTap) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    height: 50,
-    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-    child: ElevatedButton(
-      onPressed: () {
-        onTap();
-      },
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
-              return Colors.black26;
-            }
-            return Colors.white;
-          }),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
-      child: const Text(
-        'ADMIN',
-        style: TextStyle(
-            color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
-      ),
-    ),
   );
 }
